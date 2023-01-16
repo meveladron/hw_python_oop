@@ -63,7 +63,6 @@ class Running(Training):
     """Тренировка: бег."""
     CALORIES_MEAN_SPEED_MULTIPLIER = 18
     CALORIES_MEAN_SPEND_SHIFT: float = 1.79
-    KMH_IN_MSEC: float = 0.278
 
     def __init__(self,
                  action: int,
@@ -87,6 +86,7 @@ class SportsWalking(Training):
     CALORIES_WEIGHT_MULTIPLIER: float = 0.035
     CALORIES_SPEED_HEIGHT_MULTIPLIER: float = 0.029
     DOUBLE: int = 2
+    KMH_IN_MSEC: float = 0.278
 
     def __init__(self, action: int,
                  duration: float,
