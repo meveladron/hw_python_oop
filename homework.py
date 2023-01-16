@@ -87,6 +87,7 @@ class SportsWalking(Training):
     CALORIES_SPEED_HEIGHT_MULTIPLIER: float = 0.029
     DOUBLE: int = 2
     KMH_IN_MSEC: float = 0.278
+    CM_IN_M: float = 100
 
     def __init__(self, action: int,
                  duration: float,
