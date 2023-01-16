@@ -70,13 +70,12 @@ class Running(Training):
 
     def get_spent_calories(self) -> float:
         min_duration = self.duration * 60
-        calories = ((self.CALORIES_COEFF_1
-                    * self.get_mean_speed()
-                    - self.CALORIES_COEFF_2)
-                    * self.weight
-                    / self.M_IN_KM
-                    * min_duration)
-        return calories
+        return ((self.CALORIES_COEFF_1
+                * self.get_mean_speed()
+                - self.CALORIES_COEFF_2)
+                * self.weight
+                / self.M_IN_KM
+                * min_duration)
 
 
 class SportsWalking(Training):
