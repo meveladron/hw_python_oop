@@ -1,4 +1,5 @@
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
+from typing import Dict, List, Type
 
 
 @dataclass
@@ -9,14 +10,14 @@ class InfoMessage:
     distance: float
     speed: float
     calories: float
-    message: str = ('Тип тренировки: {training_type}; '
+    MESSAGE: str = ('Тип тренировки: {training_type}; '
                     'Длительность: {duration:.3f} ч.; '
                     'Дистанция: {distance:.3f} км; '
                     'Ср. скорость: {speed:.3f} км/ч; '
                     'Потрачено ккал: {calories:.3f}.')
 
     def get_message(self) -> str:
-        return self.message.format(**asdict(self))
+        return self.MESSAGE.format(**asdict(self))
 
 
 class Training:
@@ -25,7 +26,6 @@ class Training:
     M_IN_KM: int = 1000
     MIN_IN_H = 60
     SEC_IN_H: int = 3600
-    KMH_IN_MSEC: float = round((M_IN_KM / SEC_IN_H), 3)
     CM_IN_M: float = 100
 
     def __init__(self,
@@ -51,14 +51,14 @@ class Training:
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
-        return InfoMessage(self.__class__.__name__,
+        return InfoMessage(type(self).__name__ ,
                            self.duration,
                            self.get_distance(),
                            self.get_mean_speed(),
-                           self.get_spent_calories())
+                           self.get_spent_calories()
+                           )
 
 
-@dataclass
 class Running(Training):
     """Тренировка: бег."""
     CALORIES_MEAN_SPEED_MULTIPLIER = 18
@@ -87,7 +87,6 @@ class SportsWalking(Training):
     CALORIES_SPEED_HEIGHT_MULTIPLIER: float = 0.029
     DOUBLE: int = 2
     KMH_IN_MSEC: float = 0.278
-    CM_IN_M: float = 100
 
     def __init__(self, action: int,
                  duration: float,
@@ -117,7 +116,6 @@ class Swimming(Training):
                  length_pool: float,
                  count_pool: int) -> None:
         super().__init__(action, duration, weight)
-        self.action = action
         self.length_pool = length_pool
         self.count_pool = count_pool
 
@@ -137,15 +135,16 @@ class Swimming(Training):
                 * self.duration)
 
 
-def read_package(workout_type: str, data: list) -> Training:
+def read_package(workout_type: str, data: List[int]) -> Training:
     """Прочитать данные полученные от датчиков."""
-    package: dict = {'SWM': Swimming,
-                     'RUN': Running,
-                     'WLK': SportsWalking}
-    if workout_type in package.keys():
-        return package[workout_type](*data)
-    else:
-        return f'{workout_type} вид тренировки не найден'
+    package: Dict[str, Type[Training]] = {
+        'SWM': Swimming,
+        'RUN': Running,
+        'WLK': SportsWalking
+    }
+    if workout_type not in package:
+        raise ZeroDivisionError('Данный тип тренировки не найден')
+    return package[workout_type](*data)
 
 
 def main(training: Training) -> None:
