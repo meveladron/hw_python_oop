@@ -30,7 +30,12 @@ class Training:
     M_IN_KM: int = 1000
     MIN_IN_H = 60
 
-    def __init__(self, action: int, duration: float, weight: float) -> None:
+    def __init__(
+        self,
+        action: int,
+        duration: float,
+        weight: float
+    ) -> None:
         self.action = action
         self.duration = duration
         self.weight = weight
@@ -66,10 +71,9 @@ class Running(Training):
 
     def get_spent_calories(self) -> float:
         return (
-            (
-                self.CALORIES_MEAN_SPEED_MULTIPLIER * self.get_mean_speed()
-                + self.CALORIES_MEAN_SPEND_SHIFT
-            )
+            (self.CALORIES_MEAN_SPEED_MULTIPLIER 
+            * self.get_mean_speed()
+            + self.CALORIES_MEAN_SPEND_SHIFT)
             * self.weight
             / self.M_IN_KM
             * self.duration
@@ -87,7 +91,11 @@ class SportsWalking(Training):
     CM_IN_M: float = 100
 
     def __init__(
-        self, action: int, duration: float, weight: float, height: float
+        self,
+        action: int,
+        duration: float,
+        weight: float,
+        height: float
     ) -> None:
         super().__init__(action, duration, weight)
         self.height = height
